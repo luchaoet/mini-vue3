@@ -11,7 +11,7 @@ export function effect(fn, options: any = {}) {
 }
 
 let uid = 0
-let activeEffect // 保存当前 effect
+export let activeEffect // 保存当前 effect
 let effectStack = []
 
 function createReactiveEffect(fn, options) {
