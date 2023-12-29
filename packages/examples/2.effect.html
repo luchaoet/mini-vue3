@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+</body>
+<script src="../reactivity/dist/reactivity.global.js"></script>
+<script>
+  const { reactive, effect } = VueReactivity;
+  const state = reactive({
+    name: 'lucas',
+    nickName: 'sb',
+    weight: 100,
+    friends: ['YUMI'],
+    info: {
+      age: 20,
+      sex: 'man'
+    }
+  })
+
+  effect(() => {
+    state.name
+    state.name
+    state.friends.length
+    state.friends[10]
+
+    effect(() => {
+      state.info.sex
+    })
+    state.info.age
+  })
+
+  effect(() => {
+    state.nickName
+    state.info
+    state.weight
+
+  })
+
+  effect(() => {
+    state.name
+    state.name
+    state.name
+  })
+
+  setTimeout(() => {
+    state.friends.length = 8;
+  }, 1000);
+
+
+
+
+    // state.name = 'yumi'
+    // state.info.age = 30
+    // state.friends.push('XiaoMing')
+    // state.friends[8] = 'hongHong';
+    // state.weight = 120
+
+
+
+</script>
+
+</html>
