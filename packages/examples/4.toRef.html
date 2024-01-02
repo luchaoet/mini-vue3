@@ -13,25 +13,23 @@
 </body>
 <script src="../reactivity/dist/reactivity.global.js"></script>
 <script>
-  const { reactive, effect, ref } = VueReactivity;
+  const { toRef, effect, reactive } = VueReactivity;
 
-  const name = ref('luchao')
-  const lucas = ref({
-    height: 180,
-    sex: 'man'
-  })
+  const state = reactive({ age: 10 })
 
-  // console.log(lucas)
-  // console.log(name)
+  const myAge = toRef(state, 'age')
+
+  console.log(myAge)
 
   effect(() => {
-    // app.innerHTML = JSON.stringify(lucas.value)
-    app.innerHTML = name.value
+    app.innerHTML = myAge.value
   })
 
   setTimeout(() => {
-    name.value = 'lucas'
+    myAge.value = 100
   }, 1000);
+
+
 
 </script>
 

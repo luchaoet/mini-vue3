@@ -20,7 +20,7 @@ function createReactiveEffect(fn, options) {
       try {
         effectStack.push(effect)
         activeEffect = effect
-        fn()
+        return fn()
       } finally {
         /**
          * 每个effect函数执行fn，如果fn中有数据get，则会调用Track收集activeEffect

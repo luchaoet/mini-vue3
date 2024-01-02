@@ -1,9 +1,20 @@
 import { track, trigger } from './effect'
 import { TrackOpTypes, TriggerOpTypes } from './operations'
-import { hasChanged } from '@vue/shared'
+import { hasChanged, isArray } from '@vue/shared'
 
-export function toRefs(object: object) {
-  return {}
+export function toRef(
+  source: Record<string, any>,
+  key?: string,
+  defaultValue?: unknown) {
+  return new ObjectRefImpl(source, key, defaultValue)
+}
+
+export function toRefs(object) {
+  const ret: any = isArray(object) ? new Array(object.length) : {}
+  for (const key in object) {
+    ret[key] = propertyToRef(object, key)
+  }
+  return ret
 }
 
 export function ref(value) {
@@ -21,6 +32,17 @@ export function isRef(r: any) {
 
 function createRef(rawValue, shallow: boolean = false) {
   return new RefImpl(rawValue, shallow)
+}
+
+function propertyToRef(
+  source: Record<string, any>,
+  key: string,
+  defaultValue?: unknown
+) {
+  const val = source[key]
+  return isRef(val)
+    ? val
+    : (new ObjectRefImpl(source, key, defaultValue) as any)
 }
 
 class RefImpl {
@@ -45,5 +67,24 @@ class RefImpl {
       trigger(this, TriggerOpTypes.SET, 'value', newVal)
     }
 
+  }
+}
+
+class ObjectRefImpl<T extends object, K extends keyof T> {
+  public readonly __v_isRef = true
+
+  constructor(
+    private readonly _object: T,
+    private readonly _key: K,
+    private readonly _defaultValue?: T[K]
+  ) { }
+
+  get value() {
+    const val = this._object[this._key]
+    return val === undefined ? this._defaultValue! : val
+  }
+
+  set value(newVal) {
+    this._object[this._key] = newVal
   }
 }

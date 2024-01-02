@@ -13,25 +13,30 @@
 </body>
 <script src="../reactivity/dist/reactivity.global.js"></script>
 <script>
-  const { reactive, effect, ref } = VueReactivity;
+  const { reactive, computed, effect } = VueReactivity;
 
-  const name = ref('luchao')
-  const lucas = ref({
-    height: 180,
-    sex: 'man'
+  const state = reactive({ age: 10, name: 'lucas' })
+
+  // computed的值不使用 则computed不会执行
+  // 具有缓存机制
+  const age = computed(() => state.age);
+
+  const name = computed({
+    get: () => state.name,
+    set: (v) => {
+      state.name = v
+    }
   })
 
-  // console.log(lucas)
-  // console.log(name)
-
   effect(() => {
-    // app.innerHTML = JSON.stringify(lucas.value)
-    app.innerHTML = name.value
+    app.innerHTML = age.value + name.value
   })
 
   setTimeout(() => {
-    name.value = 'lucas'
+    state.age = 20
+    state.name = 'luchao'
   }, 1000);
+
 
 </script>
 
