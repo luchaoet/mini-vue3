@@ -19,9 +19,12 @@
 
   // computed的值不使用 则computed不会执行
   // 具有缓存机制
-  const age = computed(() => state.age);
+  const age1 = computed(() => {
+    console.log('age1')
+    return state.age
+  });
 
-  const name = computed({
+  const name1 = computed({
     get: () => state.name,
     set: (v) => {
       state.name = v
@@ -29,7 +32,7 @@
   })
 
   effect(() => {
-    app.innerHTML = age.value + name.value
+    app.innerHTML = age1.value + name1.value
   })
 
   setTimeout(() => {

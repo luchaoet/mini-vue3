@@ -14,3 +14,5 @@ async function build(target) {
 
 build('reactivity')
 build('shared')
+build('runtime-dom')
+build('runtime-core')

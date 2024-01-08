@@ -15,7 +15,7 @@ export let activeEffect // 保存当前 effect
 let effectStack = []
 
 function createReactiveEffect(fn, options) {
-  const effect = function reactiveEffect() {
+  const effect = () => {
     if (!effectStack.includes(effect)) {
       try {
         effectStack.push(effect)
@@ -57,7 +57,7 @@ function createReactiveEffect(fn, options) {
 const targetMap = new WeakMap()
 // 收集依赖 在获取数据get时收集 target 下的 key 所在的 effect
 export function track(target, type, key) {
-  // console.log({ target, type, key, uid: activeEffect?.id })
+  console.log('track', { target, type, key, uid: activeEffect?.id })
   // 数据get 触发 track， activeEffect存在说明key在effect中
   if (activeEffect) {
     let depsMap = targetMap.get(target)
@@ -88,7 +88,7 @@ export function trigger(target: object, type: TriggerOpTypes, key: any, newValue
   const dep = depsMap.get(key) || []
   const effectSet = new Set()
   const add = (es) => {
-    es.forEach(effect => effectSet.add(effect))
+    es && es.forEach(effect => effectSet.add(effect))
   }
   add(dep)
 
@@ -116,5 +116,11 @@ export function trigger(target: object, type: TriggerOpTypes, key: any, newValue
     }
   }
 
-  dep.forEach((effect: any) => effect())
+  dep.forEach((effect: any) => {
+    if (effect.options.sch) {
+      effect.options.sch(effect)
+    } else {
+      effect()
+    }
+  })
 }

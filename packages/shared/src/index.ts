@@ -22,3 +22,5 @@ export const isIntegerKey = (key: unknown) =>
 // 严格相等 注意 Object.is 与 === 的区别
 export const hasChanged = (value: any, oldValue: any): boolean =>
   !Object.is(value, oldValue)
+
+export * from './shapeFlags'

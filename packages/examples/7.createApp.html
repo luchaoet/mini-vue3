@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">100</div>
+</body>
+<script src="../runtime-dom/dist/runtime-dom.global.js"></script>
+<script>
+  const { createApp, h, reactive, toRefs } = VueRuntimeDom;
+
+  const App = {
+    setup(props, context) {
+      // 返回值 1 对象 2 函数
+      const state = reactive({ name: "张三", isFlag: false })
+
+      setTimeout(() => {
+        state.isFlag = true
+        state.name = '李四'
+      }, 1000);
+
+      return {
+        state
+      }
+    },
+    render(proxy) {
+      // console.log('proxy', proxy.state.name)
+      // console.log('isFlag', this.isFlag)
+      // return proxy.state.isFlag ? h('div', proxy.state.name) : h('p', proxy.state.name)
+      // return proxy.state.isFlag ? h('div', { style: { color: 'red' } }, '111') : h('div', { style: { color: 'blue' } }, '222')
+      if (proxy.state.isFlag) {
+        return h(
+          "div",
+          {
+            style: { color: "red", marginLeft: "40px" },
+            onClick: proxy.fn,
+          },
+          [
+            h("p", { key: "a" }, "a"),
+            h("p", { key: "b" }, "b"),
+            h("p", { key: "e" }, "e"),
+            h("p", { key: "c" }, "c"),
+            h("p", { key: "d" }, "d"),
+          ]
+        )
+      } else {
+        return h(
+          "div",
+          {
+            style: { color: "blue", marginLeft: "40px" },
+            onClick: proxy.fn,
+          },
+          [
+            h("p", { key: "a" }, "a"),
+            h("p", { key: "b" }, "b"),
+            h("p", { key: "c" }, "c"),
+            h("p", { key: "d" }, "d"),
+            h("p", { key: "e" }, "e"),
+          ]
+        )
+      }
+    }
+  }
+
+  createApp(App, { name1: 'lucas', age1: 20 }).mount('#app')
+</script>
+
+</html>
